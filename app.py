@@ -5,7 +5,7 @@ import asyncio
 import io
 
 # Page config
-st.set_page_config(page_title="🌈 Chroma Translator", layout="wide", page_icon="🌍")
+st.set_page_config(page_title=" Chroma Translator", layout="wide", page_icon="🌍")
 
 # ========== VIBRANT CUSTOM CSS ==========
 st.markdown("""
@@ -156,7 +156,7 @@ with st.sidebar:
     st.info("Press **Ctrl+Enter** for quick translation")
 
 # Main interface
-st.markdown("# 🌈✨ **Spectra Translate** ✨🌈")
+st.markdown("# 🌈✨ **Mother tonguer** ✨🌈")
 st.markdown("<p style='text-align: center; opacity: 0.8; margin-top: -20px;'>break language barriers with vibrant AI</p>", unsafe_allow_html=True)
 
 # Input area
@@ -197,7 +197,7 @@ if process:
                     border: 1px solid rgba(255,215,150,0.5);
                 '>
                     <h3 style='color: #FFE2B5; margin-bottom: 15px;'>{LANGUAGES[target_lang]['emoji']} {target_lang}</h3>
-                    <p style='font-size: 1.4rem; line-height: 1.5; color: white;'>{translated}</p>
+                    <p style='font-size: 1.4rem; line-height: 1.5; color: black;'>{translated}</p>
                 </div>
                 """, unsafe_allow_html=True)
                 
