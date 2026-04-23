@@ -1,7 +1,8 @@
 # 🌐 Voice Translator
 
 (I deployed it with a help of streamlit,
-here is how to run it in web, not locally -  https://mother-tonguer-2w73kppag3hb7op56bbazf.streamlit.app/
+here is how to run it in web, not locally 
+-  https://mother-tonguer-2w73kppag3hb7op56bbazf.streamlit.app/
 
 A simple web app that actually translates interesting languages and reads the result aloud.
 
