@@ -411,9 +411,6 @@ with col_swap:
         old_tgt = st.session_state.target_lang
         st.session_state.src_lang = old_tgt
         st.session_state.target_lang = old_src
-        # Also update the widget keys so selectboxes actually reflect the swap
-        st.session_state.src_select = old_tgt
-        st.session_state.tgt_select = old_src
         st.session_state.translated_text = ""
         st.rerun()
     st.markdown('</div>', unsafe_allow_html=True)
