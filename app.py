@@ -412,10 +412,6 @@ with col_swap:
             st.session_state.target_lang,
             st.session_state.src_lang,
         )
-        st.session_state.src_select, st.session_state.tgt_select = (
-            st.session_state.tgt_select,
-            st.session_state.src_select,
-        )
         st.session_state.translated_text = ""
         st.rerun()
     st.markdown('</div>', unsafe_allow_html=True)
