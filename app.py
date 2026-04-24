@@ -28,8 +28,7 @@ st.markdown("""
     html, body, .stApp, .stApp > div, [data-testid="stAppViewContainer"],
     [data-testid="stHeader"], [data-testid="stToolbar"],
     [data-testid="stSidebar"], [data-testid="stBottom"],
-    .main, .block-container, section, .stMarkdown,
-    div[class*="st-"], div[data-baseweb], [class*="css"] {
+    .main, .block-container, section, .stMarkdown {
         background-color: #000000 !important;
         background: #000000 !important;
         color: #ffffff !important;
