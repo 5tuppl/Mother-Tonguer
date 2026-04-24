@@ -6,249 +6,334 @@ import re
 
 # Page config
 st.set_page_config(
-    page_title="Translate | AI Translator", 
+    page_title="Voicer — AI Translator",
     layout="wide",
-    page_icon="●"
+    page_icon="🌐"
 )
 
-# Minimalist high-contrast B&W CSS
+# Modern light SaaS CSS
 st.markdown("""
     <style>
-    /* Hide Streamlit defaults */
-    #MainMenu {visibility: hidden;}
-    footer {visibility: hidden;}
-    header {visibility: hidden;}
-    
-    /* Clean typography */
+    /* ── Imports ── */
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-    
-    * {
-        font-family: 'Inter', sans-serif;
-    }
-    
-    /* Pure black and white background */
+
+    /* ── Reset & base ── */
+    #MainMenu {visibility: hidden;}
+    footer    {visibility: hidden;}
+    header    {visibility: hidden;}
+
+    * { font-family: 'Inter', sans-serif; box-sizing: border-box; }
+
+    /* ── Background ── */
     .stApp {
-        background: #000000;
+        background: #f1f5f9;
     }
-    
-    /* Main container */
+
+    /* ── Main container ── */
     .main .block-container {
-        max-width: 1200px;
-        padding-top: 2rem;
+        max-width: 1080px;
+        padding: 2.5rem 1.5rem 4rem;
     }
-    
-    /* Title styling */
-    .title-container {
+
+    /* ── App header ── */
+    .app-header {
         text-align: center;
-        padding: 1rem 0 2rem 0;
+        padding: 1.5rem 0 2rem;
     }
-    
-    .main-title {
-        font-size: 4rem;
+    .app-logo {
+        font-size: 1rem;
+        font-weight: 700;
+        color: #6366f1;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        margin-bottom: 0.75rem;
+    }
+    .app-title {
+        font-size: 2.8rem;
         font-weight: 800;
-        color: #ffffff;
-        letter-spacing: -0.02em;
-        margin-bottom: 0.5rem;
+        color: #1e293b;
+        letter-spacing: -0.03em;
+        line-height: 1.15;
+        margin: 0;
     }
-    
-    .subtitle {
-        text-align: center;
-        color: #888888;
-        font-size: 0.9rem;
+    .app-subtitle {
+        color: #94a3b8;
+        font-size: 1rem;
         font-weight: 400;
-        letter-spacing: 0.01em;
+        margin-top: 0.5rem;
     }
-    
-    /* Text area - pure white on black */
+
+    /* ── Language bar card ── */
+    .lang-bar {
+        background: #ffffff;
+        border-radius: 20px;
+        padding: 1.25rem 1.5rem;
+        box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06);
+        margin-bottom: 1.25rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+    .lang-label {
+        font-size: 11px;
+        font-weight: 600;
+        color: #94a3b8;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        margin-bottom: 6px;
+    }
+
+    /* ── Panel cards (input / output) ── */
+    .panel-card {
+        background: #ffffff;
+        border-radius: 20px;
+        padding: 1.5rem;
+        box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06);
+        margin-bottom: 1.25rem;
+    }
+    .panel-label {
+        font-size: 11px;
+        font-weight: 700;
+        color: #94a3b8;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        margin-bottom: 0.75rem;
+    }
+
+    /* ── Text area ── */
     .stTextArea textarea {
-        background: #1a1a1a !important;
-        border: 1px solid #333333 !important;
-        border-radius: 0px !important;
-        color: #ffffff !important;
+        background: #f8fafc !important;
+        border: 1.5px solid #e2e8f0 !important;
+        border-radius: 14px !important;
+        color: #1e293b !important;
         font-size: 15px !important;
         padding: 16px !important;
-        line-height: 1.5 !important;
+        line-height: 1.65 !important;
         font-weight: 400 !important;
+        resize: vertical !important;
+        transition: border-color 0.2s, box-shadow 0.2s !important;
     }
-    
     .stTextArea textarea:focus {
-        border-color: #ffffff !important;
-        box-shadow: none !important;
-    }
-    
-    .stTextArea textarea::placeholder {
-        color: #555555 !important;
-    }
-    
-    /* Labels */
-    .stSelectbox label {
-        font-weight: 500 !important;
-        color: #ffffff !important;
-        font-size: 13px !important;
-        margin-bottom: 6px !important;
-        letter-spacing: 0.02em;
-    }
-    
-    /* Select boxes - dark theme */
-    .stSelectbox div[data-baseweb="select"] {
-        background: #1a1a1a !important;
-        border-radius: 0px !important;
-        border: 1px solid #333333 !important;
-    }
-    
-    .stSelectbox div[data-baseweb="select"] div {
-        color: #ffffff !important;
-    }
-    
-    /* Button styling - inverted */
-    .stButton button {
+        border-color: #6366f1 !important;
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12) !important;
         background: #ffffff !important;
-        color: #000000 !important;
+    }
+    .stTextArea textarea::placeholder {
+        color: #cbd5e1 !important;
+    }
+    .stTextArea label { display: none !important; }
+
+    /* ── Selectbox ── */
+    .stSelectbox label {
+        font-size: 11px !important;
+        font-weight: 700 !important;
+        color: #94a3b8 !important;
+        letter-spacing: 0.1em !important;
+        text-transform: uppercase !important;
+        margin-bottom: 4px !important;
+    }
+    .stSelectbox div[data-baseweb="select"] {
+        background: #f8fafc !important;
+        border-radius: 12px !important;
+        border: 1.5px solid #e2e8f0 !important;
+        transition: border-color 0.2s !important;
+    }
+    .stSelectbox div[data-baseweb="select"]:hover {
+        border-color: #6366f1 !important;
+    }
+    .stSelectbox div[data-baseweb="select"] div {
+        color: #1e293b !important;
+        font-weight: 500 !important;
+    }
+
+    /* ── Buttons ── */
+    .stButton button {
+        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%) !important;
+        color: #ffffff !important;
         font-weight: 600 !important;
         border: none !important;
-        border-radius: 0px !important;
-        padding: 12px 32px !important;
-        font-size: 14px !important;
-        letter-spacing: 0.05em;
+        border-radius: 14px !important;
+        padding: 13px 32px !important;
+        font-size: 15px !important;
+        letter-spacing: 0.01em !important;
         transition: all 0.2s ease !important;
+        box-shadow: 0 4px 14px rgba(99, 102, 241, 0.35) !important;
         width: 100% !important;
     }
-    
     .stButton button:hover {
-        background: #e0e0e0 !important;
+        transform: translateY(-1px) !important;
+        box-shadow: 0 6px 20px rgba(99, 102, 241, 0.45) !important;
+    }
+    .stButton button:active {
+        transform: translateY(0) !important;
+    }
+
+    /* Swap button — secondary style */
+    .swap-btn button {
+        background: #f1f5f9 !important;
+        color: #475569 !important;
+        box-shadow: none !important;
+        border: 1.5px solid #e2e8f0 !important;
+        border-radius: 50% !important;
+        padding: 10px !important;
+        font-size: 18px !important;
+        font-weight: 400 !important;
+        width: 44px !important;
+        height: 44px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        transition: background 0.2s, border-color 0.2s !important;
+    }
+    .swap-btn button:hover {
+        background: #e0e7ff !important;
+        border-color: #6366f1 !important;
+        color: #6366f1 !important;
         transform: none !important;
         box-shadow: none !important;
     }
-    
-    /* Sidebar - pure black */
-    .css-1d391kg, .css-12oz5g7 {
-        background: #000000 !important;
-        border-right: 1px solid #222222 !important;
-    }
-    
-    /* Sidebar text */
-    .sidebar .sidebar-content {
-        color: #ffffff;
-    }
-    
-    /* Info/Warning/Success messages - minimal */
-    .stAlert {
-        border-radius: 0px !important;
-        border-left: 2px solid !important;
+
+    /* Detect-switch button — ghost style */
+    .detect-btn button {
+        background: #f0fdf4 !important;
+        color: #16a34a !important;
+        border: 1.5px solid #bbf7d0 !important;
+        border-radius: 10px !important;
+        box-shadow: none !important;
         font-size: 13px !important;
-        padding: 12px !important;
+        padding: 8px 16px !important;
+        font-weight: 600 !important;
     }
-    
-    .stInfo {
-        background: #1a1a1a !important;
-        color: #aaaaaa !important;
+    .detect-btn button:hover {
+        background: #dcfce7 !important;
+        border-color: #4ade80 !important;
+        transform: none !important;
+        box-shadow: none !important;
     }
-    
-    .stWarning {
-        background: #1a1a1a !important;
-        color: #ffaa66 !important;
-    }
-    
-    .stSuccess {
-        background: #1a1a1a !important;
-        color: #66ff66 !important;
-    }
-    
-    .stError {
-        background: #1a1a1a !important;
-        color: #ff6666 !important;
-    }
-    
-    /* Result card - pure black and white */
+
+    /* ── Result card ── */
     .result-card {
-        background: #1a1a1a;
-        border: 1px solid #333333;
-        padding: 24px;
-        margin: 0;
+        background: #f8fafc;
+        border: 1.5px solid #e2e8f0;
+        border-radius: 14px;
+        padding: 20px 22px;
+        min-height: 200px;
     }
-    
     .result-text {
-        color: #ffffff;
-        font-size: 16px;
-        line-height: 1.6;
+        color: #1e293b !important;
+        font-size: 15px;
+        line-height: 1.65;
         margin: 0;
         font-weight: 400;
     }
-    
-    /* Empty state card */
     .empty-card {
-        background: #1a1a1a;
-        border: 1px solid #333333;
-        padding: 24px;
+        background: #f8fafc;
+        border: 1.5px dashed #cbd5e1;
+        border-radius: 14px;
+        padding: 40px 20px;
         text-align: center;
+        min-height: 200px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
-    
     .empty-text {
-        color: #555555;
-        margin: 0;
+        color: #94a3b8 !important;
         font-size: 14px;
+        margin: 0;
     }
-    
-    /* Divider */
-    hr {
-        margin: 30px 0;
-        border: none;
-        height: 1px;
-        background: #222222;
+
+    /* ── Alerts ── */
+    .stAlert {
+        border-radius: 12px !important;
+        border: none !important;
+        font-size: 13px !important;
+        font-weight: 500 !important;
     }
-    
-    /* Caption text */
-    .stCaption {
-        color: #666666 !important;
+    [data-testid="stNotification"] {
+        border-radius: 12px !important;
     }
-    
-    /* Spinner */
-    .stSpinner > div {
-        border-color: #ffffff !important;
-    }
-    
-    /* Audio player */
+
+    /* ── Audio player ── */
     audio {
         width: 100%;
-        margin-top: 12px;
+        margin-top: 14px;
+        border-radius: 10px;
     }
-    
-    /* Headers */
+
+    /* ── Spinner ── */
+    .stSpinner > div {
+        border-top-color: #6366f1 !important;
+    }
+
+    /* ── Divider ── */
+    hr {
+        border: none;
+        height: 1px;
+        background: #e2e8f0;
+        margin: 2rem 0;
+    }
+
+    /* ── Caption / small text ── */
+    .stCaption {
+        color: #94a3b8 !important;
+    }
+
+    /* ── General headings / paragraphs ── */
     h1, h2, h3, h4 {
-        color: #ffffff !important;
-        font-weight: 600 !important;
+        color: #1e293b !important;
+        font-weight: 700 !important;
     }
-    
-    p {
-        color: #cccccc !important;
+    p { color: #475569 !important; }
+
+    /* ── Footer ── */
+    .footer-text {
+        text-align: center;
+        color: #94a3b8;
+        font-size: 12px;
+        padding-top: 0.5rem;
+    }
+
+    /* ── Responsive tweaks ── */
+    @media (max-width: 768px) {
+        .app-title { font-size: 2rem; }
+        .main .block-container { padding: 1.5rem 1rem 3rem; }
     }
     </style>
 """, unsafe_allow_html=True)
 
-# Language configuration - no emojis
+# ── Language configuration ──────────────────────────────────────────────────
 LANGUAGES = {
-    'English': {'code': 'en', 'voice': 'en-US-AndrewNeural'},
+    'English':   {'code': 'en', 'voice': 'en-US-AndrewNeural'},
     'Mongolian': {'code': 'mn', 'voice': 'mn-MN-YesuiNeural'},
-    'Russian': {'code': 'ru', 'voice': 'ru-RU-DmitryNeural'},
-    'Kazakh': {'code': 'kk', 'voice': 'kk-KZ-AigulNeural'}
+    'Russian':   {'code': 'ru', 'voice': 'ru-RU-DmitryNeural'},
+    'Kazakh':    {'code': 'kk', 'voice': 'kk-KZ-AigulNeural'},
 }
 
+LANG_FLAGS = {
+    'English':   '🇬🇧',
+    'Mongolian': '🇲🇳',
+    'Russian':   '🇷🇺',
+    'Kazakh':    '🇰🇿',
+}
+
+
+# ── Helpers ─────────────────────────────────────────────────────────────────
 def detect_language(text):
-    """Detect language based on character patterns"""
+    """Detect language based on character patterns."""
     if not text or len(text.strip()) < 2:
         return None
-    
-    cyrillic = r'[\u0400-\u04FF]'
-    latin = r'[a-zA-Z]'
+
+    cyrillic        = r'[\u0400-\u04FF]'
+    latin           = r'[a-zA-Z]'
     kazakh_specific = r'[әғқңөұүһ]'
-    
+
     text_lower = text.lower()
-    
-    has_cyrillic = len(re.findall(cyrillic, text_lower)) > len(text) * 0.3
-    has_latin = len(re.findall(latin, text_lower)) > len(text) * 0.3
-    has_kazakh = len(re.findall(kazakh_specific, text_lower)) > 0
-    has_mongolian = len(re.findall(r'[өү]', text_lower)) > 0
-    
+    has_cyrillic  = len(re.findall(cyrillic,        text_lower)) > len(text) * 0.3
+    has_latin     = len(re.findall(latin,            text_lower)) > len(text) * 0.3
+    has_kazakh    = len(re.findall(kazakh_specific,  text_lower)) > 0
+    has_mongolian = len(re.findall(r'[өү]',          text_lower)) > 0
+
     if has_kazakh:
         return 'Kazakh'
     if has_mongolian and has_cyrillic:
@@ -257,8 +342,8 @@ def detect_language(text):
         return 'Russian'
     if has_latin:
         return 'English'
-    
     return None
+
 
 async def generate_voice(text, voice):
     communicate = edge_tts.Communicate(text, voice)
@@ -268,122 +353,179 @@ async def generate_voice(text, voice):
             audio_data += chunk["data"]
     return audio_data
 
-# Initialize session state
-if 'src_lang' not in st.session_state:
-    st.session_state.src_lang = 'English'
-if 'target_lang' not in st.session_state:
-    st.session_state.target_lang = 'Mongolian'
+
+# ── Session state ────────────────────────────────────────────────────────────
+if 'src_lang'        not in st.session_state:
+    st.session_state.src_lang        = 'English'
+if 'target_lang'     not in st.session_state:
+    st.session_state.target_lang     = 'Mongolian'
 if 'translated_text' not in st.session_state:
     st.session_state.translated_text = ""
 
-# Sidebar
-with st.sidebar:
-    st.markdown("### CONFIG")
-    st.markdown("---")
-    
-    st.session_state.src_lang = st.selectbox(
-        "SOURCE",
-        list(LANGUAGES.keys()),
-        index=list(LANGUAGES.keys()).index(st.session_state.src_lang)
-    )
-    
-    st.session_state.target_lang = st.selectbox(
-        "TARGET",
-        list(LANGUAGES.keys()),
-        index=list(LANGUAGES.keys()).index(st.session_state.target_lang)
-    )
-    
-    st.markdown("---")
-    st.caption("VOICE ENGINE")
-    st.caption("Neural TTS")
-    st.caption("Low latency")
 
-# Main content
-st.markdown('<div class="title-container">', unsafe_allow_html=True)
-st.markdown('<div class="main-title">TRANSLATE</div>', unsafe_allow_html=True)
-st.markdown('<div class="subtitle">AI-powered language translation</div>', unsafe_allow_html=True)
+# ══════════════════════════════════════════════════════════════════════════════
+#  HEADER
+# ══════════════════════════════════════════════════════════════════════════════
+st.markdown("""
+<div class="app-header">
+    <div class="app-logo">✦ Voicer</div>
+    <div class="app-title">AI Translation</div>
+    <div class="app-subtitle">Speak any language — instantly</div>
+</div>
+""", unsafe_allow_html=True)
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+#  LANGUAGE SELECTOR BAR
+# ══════════════════════════════════════════════════════════════════════════════
+st.markdown('<div class="panel-card">', unsafe_allow_html=True)
+col_src, col_swap, col_tgt = st.columns([5, 1, 5])
+
+with col_src:
+    st.markdown('<div class="lang-label">Translate from</div>', unsafe_allow_html=True)
+    src_lang = st.selectbox(
+        "Source language",
+        list(LANGUAGES.keys()),
+        index=list(LANGUAGES.keys()).index(st.session_state.src_lang),
+        key="src_select",
+        label_visibility="collapsed",
+        format_func=lambda x: f"{LANG_FLAGS[x]}  {x}",
+    )
+    st.session_state.src_lang = src_lang
+
+with col_swap:
+    st.markdown("<div style='height:24px'></div>", unsafe_allow_html=True)
+    st.markdown('<div class="swap-btn">', unsafe_allow_html=True)
+    if st.button("⇄", key="swap_btn", help="Swap languages"):
+        st.session_state.src_lang, st.session_state.target_lang = (
+            st.session_state.target_lang,
+            st.session_state.src_lang,
+        )
+        st.session_state.translated_text = ""
+        st.rerun()
+    st.markdown('</div>', unsafe_allow_html=True)
+
+with col_tgt:
+    st.markdown('<div class="lang-label">Translate to</div>', unsafe_allow_html=True)
+    target_lang = st.selectbox(
+        "Target language",
+        list(LANGUAGES.keys()),
+        index=list(LANGUAGES.keys()).index(st.session_state.target_lang),
+        key="tgt_select",
+        label_visibility="collapsed",
+        format_func=lambda x: f"{LANG_FLAGS[x]}  {x}",
+    )
+    st.session_state.target_lang = target_lang
+
 st.markdown('</div>', unsafe_allow_html=True)
 
-# Two column layout
-col1, col2 = st.columns(2, gap="large")
 
-with col1:
-    st.markdown("### INPUT")
+# ══════════════════════════════════════════════════════════════════════════════
+#  INPUT / OUTPUT PANELS
+# ══════════════════════════════════════════════════════════════════════════════
+col_in, col_out = st.columns(2, gap="medium")
+
+with col_in:
+    st.markdown('<div class="panel-card">', unsafe_allow_html=True)
+    st.markdown('<div class="panel-label">Input text</div>', unsafe_allow_html=True)
     text_input = st.text_area(
-        "",
-        placeholder="Enter text to translate...",
-        height=200,
-        label_visibility="collapsed"
+        "Input",
+        placeholder="Type or paste your text here…",
+        height=220,
+        label_visibility="collapsed",
     )
-    
-    # Language detection
+
+    # Language auto-detection hint
     if text_input and text_input.strip():
         detected = detect_language(text_input)
         if detected and detected != st.session_state.src_lang:
-            st.info(f"DETECTED: {detected}")
-            if st.button(f"SWITCH TO {detected}", key="detect_switch", use_container_width=True):
+            st.info(f"Detected language: **{LANG_FLAGS[detected]} {detected}**")
+            st.markdown('<div class="detect-btn">', unsafe_allow_html=True)
+            if st.button(f"Switch source to {detected}", key="detect_switch"):
                 st.session_state.src_lang = detected
                 st.rerun()
+            st.markdown('</div>', unsafe_allow_html=True)
 
-with col2:
-    st.markdown("### OUTPUT")
-    
+    st.markdown('</div>', unsafe_allow_html=True)
+
+with col_out:
+    st.markdown('<div class="panel-card">', unsafe_allow_html=True)
+    st.markdown('<div class="panel-label">Translation</div>', unsafe_allow_html=True)
+
     if st.session_state.translated_text:
-        st.markdown(f"""
-        <div class="result-card">
-            <p class="result-text">{st.session_state.translated_text}</p>
-        </div>
-        """, unsafe_allow_html=True)
+        st.markdown(
+            f'<div class="result-card">'
+            f'<p class="result-text">{st.session_state.translated_text}</p>'
+            f'</div>',
+            unsafe_allow_html=True,
+        )
     else:
-        st.markdown("""
-        <div class="empty-card">
-            <p class="empty-text">Translation will appear here</p>
-        </div>
-        """, unsafe_allow_html=True)
+        st.markdown(
+            '<div class="empty-card">'
+            '<p class="empty-text">Your translation will appear here</p>'
+            '</div>',
+            unsafe_allow_html=True,
+        )
 
-# Translate button
+    st.markdown('</div>', unsafe_allow_html=True)
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+#  TRANSLATE BUTTON
+# ══════════════════════════════════════════════════════════════════════════════
 st.markdown("<br>", unsafe_allow_html=True)
-col1, col2, col3 = st.columns([1, 2, 1])
-with col2:
-    translate_clicked = st.button("TRANSLATE", use_container_width=True)
+_, btn_col, _ = st.columns([2, 3, 2])
+with btn_col:
+    translate_clicked = st.button(
+        f"Translate  {LANG_FLAGS[st.session_state.src_lang]} → {LANG_FLAGS[st.session_state.target_lang]}",
+        use_container_width=True,
+    )
 
-# Process translation
+
+# ══════════════════════════════════════════════════════════════════════════════
+#  TRANSLATION LOGIC
+# ══════════════════════════════════════════════════════════════════════════════
 if translate_clicked and text_input.strip():
-    with st.spinner("PROCESSING..."):
+    with st.spinner("Translating…"):
         try:
             translated = GoogleTranslator(
                 source=LANGUAGES[st.session_state.src_lang]['code'],
-                target=LANGUAGES[st.session_state.target_lang]['code']
+                target=LANGUAGES[st.session_state.target_lang]['code'],
             ).translate(text_input)
-            
+
             st.session_state.translated_text = translated
-            
-            with col2:
-                st.markdown(f"""
-                <div class="result-card">
-                    <p class="result-text">{translated}</p>
-                </div>
-                """, unsafe_allow_html=True)
-            
-            with st.spinner("GENERATING VOICE..."):
+
+            # Re-render the output card with the new translation
+            with col_out:
+                st.markdown(
+                    f'<div class="result-card">'
+                    f'<p class="result-text">{translated}</p>'
+                    f'</div>',
+                    unsafe_allow_html=True,
+                )
+
+            with st.spinner("Generating voice…"):
                 audio_bytes = asyncio.run(generate_voice(
                     translated,
-                    LANGUAGES[st.session_state.target_lang]['voice']
+                    LANGUAGES[st.session_state.target_lang]['voice'],
                 ))
                 st.audio(audio_bytes, format='audio/mp3')
-            
-            st.success("COMPLETE")
-            
-        except Exception as e:
-            st.error(f"ERROR: {str(e)}")
-            st.session_state.translated_text = ""
-            
-elif translate_clicked and not text_input.strip():
-    st.warning("EMPTY INPUT")
 
-# Footer
-st.markdown("---")
+            st.success("Translation complete!")
+
+        except Exception as e:
+            st.error(f"Error: {str(e)}")
+            st.session_state.translated_text = ""
+
+elif translate_clicked and not text_input.strip():
+    st.warning("Please enter some text to translate.")
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+#  FOOTER
+# ══════════════════════════════════════════════════════════════════════════════
+st.markdown("<hr>", unsafe_allow_html=True)
 st.markdown(
-    "<p style='text-align: center; color: #555555; font-size: 12px;'>NEURAL TRANSLATION SYSTEM • HIGH ACCURACY</p>",
-    unsafe_allow_html=True
+    '<p class="footer-text">Powered by Google Translate & Microsoft Neural TTS</p>',
+    unsafe_allow_html=True,
 )
