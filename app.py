@@ -6,7 +6,7 @@ import re
 
 # Page config
 st.set_page_config(
-    page_title="Voicer — AI Translator",
+    page_title="MyFavLang — AI Translator",
     layout="wide",
     page_icon="🌐"
 )
@@ -22,11 +22,22 @@ st.markdown("""
     footer    {visibility: hidden;}
     header    {visibility: hidden;}
 
-    * { font-family: 'Inter', sans-serif; box-sizing: border-box; }
+    * { font-family: 'Inter', sans-serif; box-sizing: border-box; color: #ffffff !important; }
+
+    /* ── Force black everywhere ── */
+    html, body, .stApp, .stApp > div, [data-testid="stAppViewContainer"],
+    [data-testid="stHeader"], [data-testid="stToolbar"],
+    [data-testid="stSidebar"], [data-testid="stBottom"],
+    .main, .block-container, section, .stMarkdown,
+    div[class*="st-"], div[data-baseweb], [class*="css"] {
+        background-color: #000000 !important;
+        background: #000000 !important;
+        color: #ffffff !important;
+    }
 
     /* ── Background ── */
     .stApp {
-        background: #f1f5f9;
+        background: #000000 !important;
     }
 
     /* ── Main container ── */
@@ -43,7 +54,7 @@ st.markdown("""
     .app-logo {
         font-size: 1rem;
         font-weight: 700;
-        color: #6366f1;
+        color: #ffffff;
         letter-spacing: 0.12em;
         text-transform: uppercase;
         margin-bottom: 0.75rem;
@@ -51,13 +62,13 @@ st.markdown("""
     .app-title {
         font-size: 2.8rem;
         font-weight: 800;
-        color: #1e293b;
+        color: #ffffff;
         letter-spacing: -0.03em;
         line-height: 1.15;
         margin: 0;
     }
     .app-subtitle {
-        color: #94a3b8;
+        color: #ffffff;
         font-size: 1rem;
         font-weight: 400;
         margin-top: 0.5rem;
@@ -65,10 +76,10 @@ st.markdown("""
 
     /* ── Language bar card ── */
     .lang-bar {
-        background: #ffffff;
+        background: #1a1a1a;
         border-radius: 20px;
         padding: 1.25rem 1.5rem;
-        box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
         margin-bottom: 1.25rem;
         display: flex;
         align-items: center;
@@ -77,7 +88,7 @@ st.markdown("""
     .lang-label {
         font-size: 11px;
         font-weight: 600;
-        color: #94a3b8;
+        color: #ffffff;
         letter-spacing: 0.1em;
         text-transform: uppercase;
         margin-bottom: 6px;
@@ -85,16 +96,16 @@ st.markdown("""
 
     /* ── Panel cards (input / output) ── */
     .panel-card {
-        background: #ffffff;
+        background: #1a1a1a;
         border-radius: 20px;
         padding: 1.5rem;
-        box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
         margin-bottom: 1.25rem;
     }
     .panel-label {
         font-size: 11px;
         font-weight: 700;
-        color: #94a3b8;
+        color: #ffffff;
         letter-spacing: 0.12em;
         text-transform: uppercase;
         margin-bottom: 0.75rem;
@@ -102,10 +113,10 @@ st.markdown("""
 
     /* ── Text area ── */
     .stTextArea textarea {
-        background: #f8fafc !important;
-        border: 1.5px solid #e2e8f0 !important;
+        background: #111111 !important;
+        border: 1.5px solid #333333 !important;
         border-radius: 14px !important;
-        color: #1e293b !important;
+        color: #ffffff !important;
         font-size: 15px !important;
         padding: 16px !important;
         line-height: 1.65 !important;
@@ -115,11 +126,11 @@ st.markdown("""
     }
     .stTextArea textarea:focus {
         border-color: #6366f1 !important;
-        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12) !important;
-        background: #ffffff !important;
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2) !important;
+        background: #111111 !important;
     }
     .stTextArea textarea::placeholder {
-        color: #cbd5e1 !important;
+        color: #555555 !important;
     }
     .stTextArea label { display: none !important; }
 
@@ -127,23 +138,23 @@ st.markdown("""
     .stSelectbox label {
         font-size: 11px !important;
         font-weight: 700 !important;
-        color: #94a3b8 !important;
+        color: #ffffff !important;
         letter-spacing: 0.1em !important;
         text-transform: uppercase !important;
         margin-bottom: 4px !important;
     }
     .stSelectbox div[data-baseweb="select"] {
-        background: #f8fafc !important;
+        background: #111111 !important;
         border-radius: 12px !important;
-        border: 1.5px solid #e2e8f0 !important;
+        border: 1.5px solid #333333 !important;
         transition: border-color 0.2s !important;
     }
     .stSelectbox div[data-baseweb="select"]:hover {
         border-color: #6366f1 !important;
     }
     .stSelectbox div[data-baseweb="select"] div {
-        color: #1e293b !important;
-        font-weight: 500 !important;
+        color: #ffffff !important;
+        font-weight: 600 !important;
     }
 
     /* ── Buttons ── */
@@ -170,10 +181,10 @@ st.markdown("""
 
     /* Swap button — secondary style */
     .swap-btn button {
-        background: #f1f5f9 !important;
-        color: #475569 !important;
+        background: #1a1a1a !important;
+        color: #ffffff !important;
         box-shadow: none !important;
-        border: 1.5px solid #e2e8f0 !important;
+        border: 1.5px solid #333333 !important;
         border-radius: 50% !important;
         padding: 10px !important;
         font-size: 18px !important;
@@ -213,22 +224,22 @@ st.markdown("""
 
     /* ── Result card ── */
     .result-card {
-        background: #f8fafc;
-        border: 1.5px solid #e2e8f0;
+        background: #111111;
+        border: 1.5px solid #333333;
         border-radius: 14px;
         padding: 20px 22px;
         min-height: 200px;
     }
     .result-text {
-        color: #1e293b !important;
+        color: #ffffff !important;
         font-size: 15px;
         line-height: 1.65;
         margin: 0;
         font-weight: 400;
     }
     .empty-card {
-        background: #f8fafc;
-        border: 1.5px dashed #cbd5e1;
+        background: #111111;
+        border: 1.5px dashed #444444;
         border-radius: 14px;
         padding: 40px 20px;
         text-align: center;
@@ -238,7 +249,7 @@ st.markdown("""
         justify-content: center;
     }
     .empty-text {
-        color: #94a3b8 !important;
+        color: #aaaaaa !important;
         font-size: 14px;
         margin: 0;
     }
@@ -270,26 +281,26 @@ st.markdown("""
     hr {
         border: none;
         height: 1px;
-        background: #e2e8f0;
+        background: #333333;
         margin: 2rem 0;
     }
 
     /* ── Caption / small text ── */
     .stCaption {
-        color: #94a3b8 !important;
+        color: #aaaaaa !important;
     }
 
     /* ── General headings / paragraphs ── */
     h1, h2, h3, h4 {
-        color: #1e293b !important;
+        color: #ffffff !important;
         font-weight: 700 !important;
     }
-    p { color: #475569 !important; }
+    p { color: #ffffff !important; }
 
     /* ── Footer ── */
     .footer-text {
         text-align: center;
-        color: #94a3b8;
+        color: #aaaaaa;
         font-size: 12px;
         padding-top: 0.5rem;
     }
@@ -368,7 +379,7 @@ if 'translated_text' not in st.session_state:
 # ══════════════════════════════════════════════════════════════════════════════
 st.markdown("""
 <div class="app-header">
-    <div class="app-logo">✦ Voicer</div>
+    <div class="app-logo">✦ MyFavLang</div>
     <div class="app-title">AI Translation</div>
     <div class="app-subtitle">Speak any language — instantly</div>
 </div>
