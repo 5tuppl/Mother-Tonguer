@@ -1,0 +1,27 @@
+{
+  "name": "MotherTonguer",
+  "short_name": "MotherTonguer",
+  "description": "Voice-first translation for Mongolian, Sakha, Tuvan, and more.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone", "browser"],
+  "background_color": "#f8fafc",
+  "theme_color": "#0066cc",
+  "orientation": "portrait-primary",
+  "categories": ["education", "productivity", "utilities"],
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/maskable-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ]
+}

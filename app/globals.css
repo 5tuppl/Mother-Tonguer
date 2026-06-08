@@ -1,0 +1,134 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+  --font-inter: "Inter Variable";
+  --canvas: 248 250 252;
+  --panel: 255 255 255;
+  --ink: 13 18 28;
+  --muted: 88 99 116;
+  --border: 219 226 236;
+  --accent: 0 102 204;
+  --accent-red: 213 28 47;
+  --accent-gold: 244 190 52;
+  --success: 22 163 74;
+  --danger: 199 38 52;
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+  --canvas: 9 13 20;
+  --panel: 16 23 35;
+  --ink: 241 245 249;
+  --muted: 151 164 183;
+  --border: 46 58 78;
+  --accent: 59 130 246;
+  --accent-red: 248 81 97;
+  --accent-gold: 251 204 81;
+  --success: 74 222 128;
+  --danger: 248 113 113;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-height: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100%;
+  margin: 0;
+  background:
+    linear-gradient(180deg, rgb(var(--accent) / 0.06), transparent 18rem),
+    rgb(var(--canvas));
+  color: rgb(var(--ink));
+  font-family: var(--font-inter), Inter, ui-sans-serif, system-ui, sans-serif;
+  letter-spacing: 0;
+  text-rendering: geometricPrecision;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button {
+  touch-action: manipulation;
+}
+
+::selection {
+  background: rgb(var(--accent) / 0.22);
+}
+
+:focus-visible {
+  outline: 3px solid rgb(var(--accent-gold));
+  outline-offset: 3px;
+}
+
+.mongolian-script {
+  font-family: "Noto Sans Mongolian", var(--font-inter), sans-serif;
+}
+
+.safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.scrollbar-none {
+  scrollbar-width: none;
+}
+
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+.glass-panel {
+  background: color-mix(in srgb, rgb(var(--panel)) 82%, transparent);
+  backdrop-filter: blur(28px);
+}
+
+.motif-grid {
+  background-image:
+    linear-gradient(rgb(var(--border) / 0.36) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(var(--border) / 0.36) 1px, transparent 1px);
+  background-size: 40px 40px;
+  mask-image: radial-gradient(circle at 50% 30%, black, transparent 72%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+@media (forced-colors: active) {
+  :root,
+  [data-theme="dark"] {
+    --canvas: Canvas;
+    --panel: Canvas;
+    --ink: CanvasText;
+    --muted: GrayText;
+    --border: ButtonBorder;
+    --accent: Highlight;
+    --accent-red: Mark;
+    --accent-gold: Highlight;
+  }
+
+  .glass-panel,
+  .motif-grid {
+    background: Canvas;
+    backdrop-filter: none;
+    mask-image: none;
+  }
+}
