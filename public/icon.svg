@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="MotherTonguer">
+  <rect width="512" height="512" rx="112" fill="#0066cc"/>
+  <circle cx="256" cy="116" r="44" fill="#f2c14e"/>
+  <path d="M256 164l42 72h-84l42-72z" fill="#d51c2f"/>
+  <rect x="174" y="252" width="164" height="46" rx="23" fill="#fff"/>
+  <rect x="206" y="322" width="100" height="46" rx="23" fill="#fff"/>
+  <path d="M166 380c60 30 120 30 180 0" fill="none" stroke="#f2c14e" stroke-width="28" stroke-linecap="round"/>
+</svg>
